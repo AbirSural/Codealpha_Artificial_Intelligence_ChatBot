@@ -1,0 +1,95 @@
+// Source code is decompiled from a .class file using FernFlower decompiler.
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
+
+public class AIChatbot extends JFrame implements ActionListener {
+   JTextArea chatArea;
+   JTextField inputField;
+   JButton sendButton;
+   Map<String, String> faqResponses;
+
+   public AIChatbot() {
+      this.setTitle("Java AI Chatbot");
+      this.setSize(550, 600);
+      this.setDefaultCloseOperation(3);
+      this.chatArea = new JTextArea();
+      this.chatArea.setEditable(false);
+      JScrollPane var1 = new JScrollPane(this.chatArea);
+      this.inputField = new JTextField(30);
+      this.sendButton = new JButton("Send");
+      this.sendButton.addActionListener(this);
+      JPanel var2 = new JPanel();
+      var2.add(this.inputField);
+      var2.add(this.sendButton);
+      this.add(var1, "Center");
+      this.add(var2, "South");
+      this.faqResponses = new HashMap();
+      this.faqResponses.put("hi", "Hello! How can I assist you today?");
+      this.faqResponses.put("hello", "Hi there! What would you like to talk about?");
+      this.faqResponses.put("good morning", "Good morning! Hope you have a wonderful day ahead.");
+      this.faqResponses.put("good night", "Good night! Sleep well.");
+      this.faqResponses.put("how are you", "I'm an AI bot, so I don't have feelings, but I'm here to help!");
+      this.faqResponses.put("who are you", "I'm a Java-based AI chatbot created to assist you.");
+      this.faqResponses.put("weather", "I'm not connected to live weather data, but it's always a good day to learn something new!");
+      this.faqResponses.put("java", "Java is a powerful, platform-independent programming language. Do you want to know more?");
+      this.faqResponses.put("python", "Python is popular for data science, automation, and web development.");
+      this.faqResponses.put("ai", "AI stands for Artificial Intelligence — making machines mimic human intelligence!");
+      this.faqResponses.put("machine learning", "Machine learning enables computers to learn from data without explicit programming.");
+      this.faqResponses.put("motivate me", "Believe in yourself! Every step you take brings you closer to your goals.");
+      this.faqResponses.put("inspire me", "Challenges are what make life interesting. Overcoming them is what makes life meaningful.");
+      this.faqResponses.put("sports", "Sports are great for both physical and mental health. What's your favorite sport?");
+      this.faqResponses.put("music", "Music can uplift your mood and inspire creativity. Which genre do you like?");
+      this.faqResponses.put("movies", "Movies can take us on amazing journeys. Do you have a favorite one?");
+      this.faqResponses.put("bye", "Goodbye! It was nice talking to you. Have a great day!");
+      this.faqResponses.put("see you", "See you later! Feel free to chat anytime.");
+      this.faqResponses.put("thank you", "You're welcome! Happy to help.");
+      this.faqResponses.put("help", "Sure! Ask me anything about technology, motivation, hobbies, or general topics.");
+      this.setVisible(true);
+   }
+
+   private String preprocess(String var1) {
+      return var1.toLowerCase().replaceAll("[^a-zA-Z0-9\\s]", "").trim();
+   }
+
+   private String generateResponse(String var1) {
+      String var2 = this.preprocess(var1);
+      Iterator var3 = this.faqResponses.keySet().iterator();
+
+      String var4;
+      do {
+         if (!var3.hasNext()) {
+            return "Hmm... I'm not sure how to respond to that. Can you ask something else?";
+         }
+
+         var4 = (String)var3.next();
+      } while(!var2.contains(var4));
+
+      return (String)this.faqResponses.get(var4);
+   }
+
+   public void actionPerformed(ActionEvent var1) {
+      String var2 = this.inputField.getText();
+      if (!var2.isEmpty()) {
+         this.chatArea.append("You: " + var2 + "\n");
+         String var3 = this.generateResponse(var2);
+         this.chatArea.append("Bot: " + var3 + "\n");
+         this.inputField.setText("");
+      }
+   }
+
+   public static void main(String[] var0) {
+      SwingUtilities.invokeLater(() -> {
+         new AIChatbot();
+      });
+   }
+}
